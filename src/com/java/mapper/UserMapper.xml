@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.java.entity.User">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="username" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="tele" property="tele" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="deposit" property="deposit" jdbcType="REAL" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, username, password, address, tele, create_time, deposit
+	</sql>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from user
+	</select>
+
+
+ <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{userName,jdbcType=VARCHAR}
+  </select>
+    
+  <select id="selectByUser" resultMap="BaseResultMap" parameterType="com.java.entity.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{userName,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+      <if test="address != null" >
+        and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="tele != null" >
+        and tele = #{tele,jdbcType=VARCHAR}
+      </if>
+  </select>
+
+
+
+
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.java.entity.User">
+		insert into user (user_id, username, password,
+		address, tele, create_time,
+		deposit)
+		values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR}, #{tele,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{deposit,jdbcType=REAL})
+	</insert>
+	<insert id="insertSelective" parameterType="com.java.entity.User">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="tele != null">
+				tele,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="deposit != null">
+				deposit,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tele != null">
+				#{tele,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deposit != null">
+				#{deposit,jdbcType=REAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.java.entity.User">
+		update user
+		<set>
+			<if test="userName != null">
+				username = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tele != null">
+				tele = #{tele,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deposit != null">
+				deposit = #{deposit,jdbcType=REAL},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.java.entity.User">
+		update user
+		set username = #{userName,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		tele = #{tele,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		deposit = #{deposit,jdbcType=REAL}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>
